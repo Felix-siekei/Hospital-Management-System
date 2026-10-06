@@ -49,7 +49,7 @@ bool PatientRepository::remove(int id){
             return true;
         }
     }
-    return false
+    return false;
 }
 
 
