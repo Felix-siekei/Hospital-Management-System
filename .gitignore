@@ -1,0 +1,11 @@
+# Compiled executable
+hospital
+
+# Build files
+build/
+
+# macOS
+.DS_Store
+
+# VS Code
+.vscode/
