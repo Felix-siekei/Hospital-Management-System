@@ -2,7 +2,7 @@
 #include "models/Patient.h"
 #include <vector>
 #include "repositories/ PatientRepository.h"
-#include "services/PatientServices.h"
+#include "services/PatientService.h"
 
 int main(){
 

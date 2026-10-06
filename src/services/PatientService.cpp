@@ -1,4 +1,4 @@
-#include "services/PatientServices.h"
+#include "services/PatientService.h"
 
 
 PatientService::PatientService(PatientRepository& repository)
