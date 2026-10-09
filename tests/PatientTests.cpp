@@ -33,7 +33,7 @@ void testFindPatient() {
 
     Patient patient(
         1,
-        "John",
+        "gislo",
         "Doe",
         25,
         "0712345678"
@@ -44,7 +44,7 @@ void testFindPatient() {
     const Patient* found = service.findPatientById(1);
 
     assert(found != nullptr);
-    assert(found->getFirstName() == "John");
+    assert(found->getFirstName() == "gislo");
 
     std::cout << "testFindPatient: PASSED\n";
 }
