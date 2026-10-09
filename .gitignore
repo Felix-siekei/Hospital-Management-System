@@ -1,7 +1,8 @@
 # Compiled executable
 hospital
 patient_tests
-
+doctor_tests
+*.o
 # Build files
 build/
 
