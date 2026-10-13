@@ -9,7 +9,9 @@ department_service_tests.exe
 appointment_tests.exe
 appointment_repository_tests.exe
 appointment_service_tests.exe
-
+billing_tests.exe
+billing_repository_tests.exe
+billing_service_tests.exe
 #object files
 *.o
 # Build files
