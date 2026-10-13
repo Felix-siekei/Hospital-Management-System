@@ -6,6 +6,9 @@ doctor_tests
 department_tests.exe
 department_repository_tests.exe
 department_service_tests.exe
+appointment_tests.exe
+appointment_repository_tests.exe
+appointment_service_tests.exe
 
 #object files
 *.o
