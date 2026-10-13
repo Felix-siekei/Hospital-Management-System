@@ -2,6 +2,12 @@
 hospital
 patient_tests
 doctor_tests
+
+department_tests.exe
+department_repository_tests.exe
+department_service_tests.exe
+
+#object files
 *.o
 # Build files
 build/
