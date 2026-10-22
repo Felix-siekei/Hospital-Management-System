@@ -12,6 +12,10 @@ appointment_service_tests.exe
 billing_tests.exe
 billing_repository_tests.exe
 billing_service_tests.exe
+admission_tests.exe
+admission_repository_tests.exe
+admission_service_tests.exe
+*.exe
 #object files
 *.o
 # Build files
