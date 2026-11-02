@@ -18,6 +18,7 @@ admission_service_tests.exe
 medical_record_tests.exe
 medical_record_repository_tests.exe
 medical_record_service_tests.exe
+
 *.exe
 #object files
 *.o
