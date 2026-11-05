@@ -15,13 +15,14 @@ private:
 
 public:
     Patient(
-        int id,
+        
         const std::string& firstName,
         const std::string& lastName,
         int age,
         const std::string& phone
     );
 //getter
+
     int getId() const;
     const std::string& getFirstName() const;
     const std::string& getLastName() const;
@@ -30,7 +31,7 @@ public:
 
     //setters
 
-
+    void setId(int id);
     void setFirstName(const std::string& firstName);
     void setLastName(const std::string& lastName);
     void setAge(int age);

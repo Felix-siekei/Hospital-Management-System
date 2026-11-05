@@ -3,13 +3,13 @@
  //implementation file for Patient
 
 Patient::Patient(
-    int id,
+
     const std::string& firstName,
     const std::string& lastName,
     int age,
     const std::string& phone
 )
-    : id(id),
+    : id(0),
       firstName(firstName),
       lastName(lastName),
       age(age),
@@ -51,11 +51,15 @@ void Patient::setLastName(const std::string& lastName){
 }
 
 
-void::Patient::setAge(const int age){
+void Patient::setAge(int age){
     this-> age= age;
 }
 
 void Patient::setPhone(const std::string& phone){
     this-> phone  = phone;
+}
+
+void Patient::setId(int id){
+    this->id = id;
 }
 
