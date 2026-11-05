@@ -1,7 +1,7 @@
 #pragma once
 #include "models/Patient.h"
-#include "repositories/ PatientRepository.h"
-
+#include "repositories/PatientRepository.h"
+#include <optional>
 
 
 class PatientService{
@@ -12,7 +12,7 @@ class PatientService{
     public:
     PatientService(PatientRepository& repositories);
 
-    bool registerPatient(const Patient& patient);
+    bool registerPatient( Patient& patient);
 
-    const Patient* findPatientById(int id) const;
+    std::optional<Patient> findPatientById(int id) const;
 };

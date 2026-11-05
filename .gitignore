@@ -18,6 +18,10 @@ admission_service_tests.exe
 medical_record_tests.exe
 medical_record_repository_tests.exe
 medical_record_service_tests.exe
+# SQLite database files
+*.db
+*.sqlite
+*.sqlite3
 
 *.exe
 #object files

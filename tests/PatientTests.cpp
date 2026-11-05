@@ -1,39 +1,53 @@
+
 #include <cassert>
 #include <iostream>
 
 #include "models/Patient.h"
-#include "repositories/ PatientRepository.h"
+#include "database/Database.h"
+#include "repositories/PatientRepository.h"
 #include "services/PatientService.h"
+
 
 void testRegisterPatient() {
 
-    PatientRepository repository;
+    Database database(":memory:");
+    PatientRepository repository(database);
     PatientService service(repository);
 
     Patient patient(
-        1,
         "John",
         "Doe",
         25,
         "0712345678"
     );
+    auto before = repository.getAll();
+
+std::cout << "Patients before registration: "
+          << before.size() << '\n';
 
     bool result = service.registerPatient(patient);
 
-    assert(result == true);
-    assert(repository.getAll().size() == 1);
+std::cout << "Registration result: " << result << '\n';
+std::cout << "Generated patient ID: " << patient.getId() << '\n';
 
-    std::cout << "testRegisterPatient: PASSED\n";
+auto patients = repository.getAll();
+
+std::cout << "Patients found: " << patients.size() << '\n';
+
+assert(result == true);
+assert(patient.getId() > 0);
+assert(patients.size() == 1);
 }
+
 
 void testFindPatient() {
 
-    PatientRepository repository;
+    Database database(":memory:");
+    PatientRepository repository(database);
     PatientService service(repository);
 
     Patient patient(
-        1,
-        "gislo",
+        "Gislo",
         "Doe",
         25,
         "0712345678"
@@ -41,21 +55,22 @@ void testFindPatient() {
 
     service.registerPatient(patient);
 
-    const Patient* found = service.findPatientById(1);
+    auto found = service.findPatientById(patient.getId());
 
-    assert(found != nullptr);
-    assert(found->getFirstName() == "gislo");
+    assert(found.has_value());
+    assert(found->getFirstName() == "Gislo");
 
     std::cout << "testFindPatient: PASSED\n";
 }
 
+
 void testInvalidPatient() {
 
-    PatientRepository repository;
+    Database database(":memory:");
+    PatientRepository repository(database);
     PatientService service(repository);
 
     Patient invalidPatient(
-        2,
         "Invalid",
         "Patient",
         -5,
@@ -70,12 +85,13 @@ void testInvalidPatient() {
     std::cout << "testInvalidPatient: PASSED\n";
 }
 
+
 void testUpdatePatient() {
 
-    PatientRepository repository;
+    Database database(":memory:");
+    PatientRepository repository(database);
 
     Patient patient(
-        1,
         "John",
         "Doe",
         25,
@@ -85,20 +101,21 @@ void testUpdatePatient() {
     repository.add(patient);
 
     Patient updatedPatient(
-        1,
         "Johnny",
         "Doe",
         26,
         "0799999999"
     );
 
+    updatedPatient.setId(patient.getId());
+
     bool result = repository.update(updatedPatient);
 
     assert(result == true);
 
-    const Patient* found = repository.findById(1);
+    auto found = repository.findById(patient.getId());
 
-    assert(found != nullptr);
+    assert(found.has_value());
     assert(found->getFirstName() == "Johnny");
     assert(found->getAge() == 26);
     assert(found->getPhone() == "0799999999");
@@ -106,12 +123,13 @@ void testUpdatePatient() {
     std::cout << "testUpdatePatient: PASSED\n";
 }
 
+
 void testRemovePatient() {
 
-    PatientRepository repository;
+    Database database(":memory:");
+    PatientRepository repository(database);
 
     Patient patient(
-        1,
         "John",
         "Doe",
         25,
@@ -120,13 +138,17 @@ void testRemovePatient() {
 
     repository.add(patient);
 
-    bool result = repository.remove(1);
+    bool result = repository.remove(patient.getId());
 
     assert(result == true);
-    assert(repository.findById(1) == nullptr);
+    assert(!repository.findById(patient.getId()).has_value());
+
+    // Test removing a patient that does not exist.
+    assert(repository.remove(999) == false);
 
     std::cout << "testRemovePatient: PASSED\n";
 }
+
 
 int main() {
 
