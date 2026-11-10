@@ -14,7 +14,7 @@ class Doctor {
 
     public:
         Doctor(
-            int id,
+          
             const std::string& firstName,
             const std::string& lastName,
             const std::string& specialization,
@@ -41,4 +41,6 @@ class Doctor {
         void setSpecialization(const std::string& specialization);
 
         void setPhone(const std::string& phone);
+
+        void setId(int id);
 };

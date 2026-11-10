@@ -1,5 +1,5 @@
 #pragma once
-
+#include <optional>
 #include "models/Doctor.h"
 #include "repositories/DoctorRepository.h"
 
@@ -10,7 +10,7 @@ private:
 public:
     DoctorService(DoctorRepository& repository);
 
-    bool registerDoctor(const Doctor& doctor);
+    bool registerDoctor( Doctor& doctor);
 
-    const Doctor* findDoctorById(int id) const;
+    std::optional<Doctor> findDoctorById(int id) const;
 };
