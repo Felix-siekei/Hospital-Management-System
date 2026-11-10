@@ -2,7 +2,7 @@
 
 
 Doctor::Doctor(   
-        int id,
+        
         const std::string& firstName,
         const std::string& lastName,
         const std::string& specialization,
@@ -10,7 +10,7 @@ Doctor::Doctor(
 
 ):
 
-    id(id),
+    id(0),
     firstName(firstName),
     lastName(lastName),
     specialization(specialization),
@@ -53,6 +53,10 @@ Doctor::Doctor(
     }
     void Doctor::setPhone(const std::string& phone){
         this->phone= phone;
+    }
+
+    void Doctor::setId(int id){
+        this->id = id;
     }
 
 

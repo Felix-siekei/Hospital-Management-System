@@ -1,17 +1,28 @@
 #pragma once
 
 #include <vector>
+#include <optional>
+
 #include "models/Doctor.h"
+#include "database/Database.h"
+
 
 class DoctorRepository{
+
     private:
-        std::vector<Doctor> doctors;
 
+        Database& database;
+
+
+        
     public:
-        void add(const Doctor& doctor);
-        const std::vector<Doctor>& getAll() const;
+        explicit DoctorRepository(Database& database);
 
-        const Doctor* findById(int id) const;
+       bool add( Doctor& doctor);
+
+        std::vector<Doctor> getAll() const;
+
+        std::optional<Doctor> findById(int id) const;
 
         bool update(const Doctor& updateDoctor);
 

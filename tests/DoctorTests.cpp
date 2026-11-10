@@ -1,17 +1,19 @@
+
 #include <cassert>
 #include <iostream>
 
 #include "models/Doctor.h"
+#include "database/Database.h"
 #include "repositories/DoctorRepository.h"
 #include "services/DoctorService.h"
 
 void testRegisterDoctor() {
 
-    DoctorRepository repository;
+    Database database(":memory:");
+    DoctorRepository repository(database);
     DoctorService service(repository);
 
     Doctor doctor(
-        101,
         "Sarah",
         "Mwangi",
         "Cardiology",
@@ -21,6 +23,7 @@ void testRegisterDoctor() {
     bool result = service.registerDoctor(doctor);
 
     assert(result == true);
+    assert(doctor.getId() > 0);
     assert(repository.getAll().size() == 1);
 
     std::cout << "testRegisterDoctor: PASSED\n";
@@ -28,11 +31,11 @@ void testRegisterDoctor() {
 
 void testFindDoctor() {
 
-    DoctorRepository repository;
+    Database database(":memory:");
+    DoctorRepository repository(database);
     DoctorService service(repository);
 
     Doctor doctor(
-        101,
         "Sarah",
         "Mwangi",
         "Cardiology",
@@ -41,9 +44,9 @@ void testFindDoctor() {
 
     service.registerDoctor(doctor);
 
-    const Doctor* found = service.findDoctorById(101);
+    auto found = service.findDoctorById(doctor.getId());
 
-    assert(found != nullptr);
+    assert(found.has_value());
     assert(found->getFirstName() == "Sarah");
     assert(found->getSpecialization() == "Cardiology");
 
@@ -52,18 +55,18 @@ void testFindDoctor() {
 
 void testInvalidDoctor() {
 
-    DoctorRepository repository;
+    Database database(":memory:");
+    DoctorRepository repository(database);
     DoctorService service(repository);
 
-    Doctor invalidDoctor(
-        -1,
-        "Invalid",
-        "Doctor",
-        "Cardiology",
+    Doctor doctor(
+        "John",
+        "Doe",
+        "",
         "0700000000"
     );
 
-    bool result = service.registerDoctor(invalidDoctor);
+    bool result = service.registerDoctor(doctor);
 
     assert(result == false);
     assert(repository.getAll().empty());
@@ -71,33 +74,12 @@ void testInvalidDoctor() {
     std::cout << "testInvalidDoctor: PASSED\n";
 }
 
-void testMissingSpecialization() {
-
-    DoctorRepository repository;
-    DoctorService service(repository);
-
-    Doctor invalidDoctor(
-        102,
-        "John",
-        "Doe",
-        "",
-        "0700000000"
-    );
-
-    bool result = service.registerDoctor(invalidDoctor);
-
-    assert(result == false);
-    assert(repository.getAll().empty());
-
-    std::cout << "testMissingSpecialization: PASSED\n";
-}
-
 void testUpdateDoctor() {
 
-    DoctorRepository repository;
+    Database database(":memory:");
+    DoctorRepository repository(database);
 
     Doctor doctor(
-        101,
         "Sarah",
         "Mwangi",
         "Cardiology",
@@ -107,20 +89,21 @@ void testUpdateDoctor() {
     repository.add(doctor);
 
     Doctor updatedDoctor(
-        101,
         "Sarah",
         "Mwangi",
         "Neurology",
         "0799999999"
     );
 
+    updatedDoctor.setId(doctor.getId());
+
     bool result = repository.update(updatedDoctor);
 
     assert(result == true);
 
-    const Doctor* found = repository.findById(101);
+    auto found = repository.findById(doctor.getId());
 
-    assert(found != nullptr);
+    assert(found.has_value());
     assert(found->getSpecialization() == "Neurology");
     assert(found->getPhone() == "0799999999");
 
@@ -129,10 +112,10 @@ void testUpdateDoctor() {
 
 void testRemoveDoctor() {
 
-    DoctorRepository repository;
+    Database database(":memory:");
+    DoctorRepository repository(database);
 
     Doctor doctor(
-        101,
         "Sarah",
         "Mwangi",
         "Cardiology",
@@ -141,10 +124,10 @@ void testRemoveDoctor() {
 
     repository.add(doctor);
 
-    bool result = repository.remove(101);
+    bool result = repository.remove(doctor.getId());
 
     assert(result == true);
-    assert(repository.findById(101) == nullptr);
+    assert(!repository.findById(doctor.getId()).has_value());
 
     std::cout << "testRemoveDoctor: PASSED\n";
 }
@@ -154,7 +137,6 @@ int main() {
     testRegisterDoctor();
     testFindDoctor();
     testInvalidDoctor();
-    testMissingSpecialization();
     testUpdateDoctor();
     testRemoveDoctor();
 

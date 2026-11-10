@@ -4,21 +4,15 @@ DoctorService::DoctorService(DoctorRepository& repository)
     : repository(repository) {
 }
 
-bool DoctorService::registerDoctor(const Doctor& doctor) {
-
-    if (doctor.getId() <= 0) {
-        return false;
-    }
+bool DoctorService::registerDoctor(Doctor& doctor) {
 
     if (doctor.getSpecialization().empty()) {
         return false;
     }
 
-    repository.add(doctor);
-
-    return true;
+    return repository.add(doctor);
 }
 
-const Doctor* DoctorService::findDoctorById(int id) const {
+std::optional<Doctor> DoctorService::findDoctorById(int id) const {
     return repository.findById(id);
 }
